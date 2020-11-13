@@ -1,0 +1,28 @@
+{
+  "name": "flipkartclone",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --inspect ./src/index.server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/14110145/flipkartclone.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/14110145/flipkartclone/issues"
+  },
+  "homepage": "https://github.com/14110145/flipkartclone#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.6.1",
+    "mongoose": "^5.10.14",
+    "nodemon": "^2.0.6"
+  }
+}

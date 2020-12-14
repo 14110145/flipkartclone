@@ -8,9 +8,10 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // routes
-const authRoutes = require("./routes/auth.router");
-const adminRoutes = require("./routes/admin/auth.router");
+const authRoutes = require("./routes/auth.route");
+const adminRoutes = require("./routes/admin/auth.route");
 const categoryRoutes = require("./routes/category.route");
+const productRoutes = require("./routes/product.route");
 
 mongoose
   .connect(
@@ -32,6 +33,7 @@ app.use(express.json());
 app.use("/api", authRoutes);
 app.use("/api", adminRoutes);
 app.use("/api", categoryRoutes);
+app.use("/api", productRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

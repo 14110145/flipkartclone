@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const env = require("dotenv");
+const path = require("path");
 
 // Environment config
 env.config();
@@ -21,7 +22,7 @@ mongoose
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
-      useFindAndModify: true,
+      useFindAndModify: false,
     }
   )
   .then(() => {
@@ -32,6 +33,7 @@ mongoose
   });
 
 app.use(express.json());
+app.use("/public", express.static(path.join(__dirname, "uploads")));
 app.use("/api", authRoutes);
 app.use("/api", adminRoutes);
 app.use("/api", categoryRoutes);

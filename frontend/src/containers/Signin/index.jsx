@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import Layout from "../../components/Layout";
 import Input from "../../components/UI/Input";
@@ -6,13 +6,17 @@ import { login } from "../../actions";
 import { useDispatch } from "react-redux";
 
 const Signin = (props) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
+
   const userLogin = (e) => {
     e.preventDefault();
 
     const user = {
-      email: "ltphu123",
-      password: "@ltphu123",
+      email,
+      password,
     };
     dispatch(login(user));
   };
@@ -27,16 +31,16 @@ const Signin = (props) => {
                 label="Email"
                 type="email"
                 placeholder="Email"
-                value=""
-                onChange={() => {}}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
 
               <Input
                 label="Password"
                 type="password"
                 placeholder="Password"
-                value=""
-                onChange={() => {}}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <Button variant="primary" type="submit">
                 Submit

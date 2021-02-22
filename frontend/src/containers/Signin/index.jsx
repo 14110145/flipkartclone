@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import Layout from "../../components/Layout";
 import Input from "../../components/UI/Input";
-import { login, isUserLoggedIn } from "../../actions";
+import { login } from "../../actions";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { useEffect } from "react";
 
 const Signin = (props) => {
   const [email, setEmail] = useState("");
@@ -15,11 +14,6 @@ const Signin = (props) => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!auth.authenticate) {
-      dispatch(isUserLoggedIn());
-    }
-  },[]);
 
   const userLogin = (e) => {
     e.preventDefault();
@@ -34,7 +28,6 @@ const Signin = (props) => {
   if (auth.authenticate) {
     return <Redirect to={`/`} />;
   }
-
   return (
     <Layout>
       <Container>

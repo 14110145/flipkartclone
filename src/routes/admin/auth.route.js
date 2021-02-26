@@ -14,6 +14,6 @@ const route = express.Router();
 
 route.post("/admin/signin", validateSigninRequest, isRequestValidated, signin);
 route.post("/admin/signup", validateSignupRequest, isRequestValidated, signup);
-route.post("/admin/signout", requireSignin, signout);
+route.post("/admin/signout", signout);
 
 module.exports = route;

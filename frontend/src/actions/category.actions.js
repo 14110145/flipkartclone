@@ -26,12 +26,12 @@ export const addCategory = (form) => {
   return async (dispatch) => {
     dispatch({ type: categoryContants.ADD_NEW_CATEGORY_REQUEST });
     const res = await axiosIntance.post(`/category/create`, form);
-    if (res.status === 200) {
+    if (res.status === 201) {
       dispatch({
         type: categoryContants.ADD_NEW_CATEGORY_SUCCESS,
-        payload: res.data.category,
+        payload: { category: res.data.category },
       });
-    }else{
+    } else {
       dispatch({
         type: categoryContants.ADD_NEW_CATEGORY_SUCCESS,
         payload: res.data.error,

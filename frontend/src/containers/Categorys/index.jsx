@@ -91,7 +91,6 @@ const Category = () => {
             >
               <option>Select category</option>
               {createCategoryList(category.categories).map((option) => {
-                console.log(option);
                 return (
                   <option key={option.value} value={option.value}>
                     {option.name}

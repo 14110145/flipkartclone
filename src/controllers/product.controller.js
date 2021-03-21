@@ -2,6 +2,7 @@ const Product = require("../models/product.model");
 const shortId = require("shortid");
 const multer = require("multer");
 const slugify = require("slugify");
+const Category = require("../models/category.model");
 
 exports.createProduct = (req, res) => {
   // res.status(200).json({ file: req.files, body: req.body });
@@ -30,4 +31,33 @@ exports.createProduct = (req, res) => {
       res.status(201).json({ product });
     }
   });
+};
+
+exports.getProductsBySlug = (req, res) => {
+  const { slug } = req.params;
+  Category.findOne({ slug: slug })
+    .select("_id")
+    .exec((error, category) => {
+      if (error) {
+        return res.status(400).json({ error });
+      }
+      if (category) {
+        Product.find({ category: category._id }).exec((error, products) => {
+          if (products.length > 0) {
+            return res.status(200).json({
+              products,
+              productsByPrice: {
+                under500: products.filter((product) => product.price <= 500),
+                under1k: products.filter(
+                  (product) => product.price > 500 && product.price <= 1000
+                ),
+                under2k: products.filter(
+                  (product) => product.price > 1000 && product.price <= 2000
+                ),
+              },
+            });
+          }
+        });
+      }
+    });
 };

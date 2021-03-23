@@ -39,3 +39,14 @@ export const addCategory = (form) => {
     }
   };
 };
+
+export const updateCategories = (form) => {
+  return async (dispatch) => {
+    const res = await axiosIntance.post(`/category/update`, form);
+    if (res.status === 201) {
+      return true;
+    } else {
+      console.log(res);
+    }
+  };
+};

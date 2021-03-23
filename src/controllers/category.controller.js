@@ -27,8 +27,7 @@ exports.addCategory = (req, res) => {
     slug: slugify(req.body.name),
   };
   if (req.file) {
-    categoryObj.categoryImage =
-      process.env.API + "/public/" + req.file.filename;
+    categoryObj.categoryImage = process.env.API + "/public/" + req.file.filename;
   }
   if (req.body.parentId) {
     categoryObj.parentId = req.body.parentId;
@@ -56,4 +55,34 @@ exports.getCategories = (req, res) => {
       return res.status(200).json({ categoryList });
     }
   });
+};
+
+exports.updateCategories = async (req, res) => {
+  const { name, parentId, type, _id } = req.body;
+  const updateCategories = [];
+  if (name instanceof Array) {
+    for (let i = 0; i < name.length; i++) {
+      const category = {
+        name: name[i],
+        type: type[i],
+      };
+      if (parentId[i] !== "") {
+        category.parentId = parentId[i];
+      }
+      const updatedCategory = await Category.findOneAndUpdate({ _id: _id[i] }, category, {
+        new: true,
+      });
+      updateCategories.push(updatedCategory);
+    }
+    return res.status(201).json({ updateCategories });
+  } else {
+    const category = { name, type };
+    if (parentId !== "") {
+      category.parentId = parentId;
+    }
+    const updatedCategory = await Category.findOneAndUpdate({ _id }, category, {
+      new: true,
+    });
+    return res.status(201).json({ updatedCategory });
+  }
 };

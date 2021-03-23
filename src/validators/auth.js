@@ -4,18 +4,13 @@ exports.validateSignupRequest = [
   check("firstName").notEmpty().withMessage("First name is required."),
   check("lastName").notEmpty().withMessage("Last name is required."),
   check("email").isEmail().withMessage("Valid Email is required."),
-  check("password")
-    .isLength({ min: 6 })
-    .withMessage("Password must be at least 6 character long."),
+  check("password").isLength({ min: 6 }).withMessage("Password must be at least 6 character long."),
 ];
 
 exports.validateSigninRequest = [
   check("email").isEmail().withMessage("Valid Email is required."),
-  check("password")
-    .isLength({ min: 6 })
-    .withMessage("Password must be at least 6 character long."),
+  check("password").isLength({ min: 6 }).withMessage("Password must be at least 6 character long."),
 ];
-
 
 exports.isRequestValidated = (req, res, next) => {
   const errors = validationResult(req);

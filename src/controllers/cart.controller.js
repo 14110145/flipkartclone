@@ -5,9 +5,7 @@ exports.addItemToCart = (req, res) => {
     if (error) return res.status(400).json({ error });
     if (cart) {
       // cart already exists => update cart
-      const isItemAdded = cart.cartItems.find(
-        (item) => item.product == req.body.cartItems.product
-      );
+      const isItemAdded = cart.cartItems.find((item) => item.product == req.body.cartItems.product);
       let condition, update;
       if (isItemAdded) {
         condition = {

@@ -19,6 +19,9 @@ import {
 } from "react-icons/io";
 
 const Category = () => {
+  const category = useSelector((state) => state.category);
+  const dispatch = useDispatch();
+
   const [categoryName, setCategoryName] = useState("");
   const [parentCategoryId, setParentCategoryId] = useState("");
   const [categoryImage, setCategoryImage] = useState("");
@@ -27,6 +30,7 @@ const Category = () => {
   const [checkedArray, setCheckedArray] = useState([]);
   const [expandedArray, setExpandedArray] = useState([]);
   const [updateCategoryModal, setUpdateCategoryModal] = useState(false);
+  const [deleteCategoryModal, setDeleteCategoryModal] = useState(false);
 
   // Bootstrap react
   const [show, setShow] = useState(false);
@@ -43,27 +47,14 @@ const Category = () => {
   };
   const handleShow = () => setShow(true);
 
-  const category = useSelector((state) => state.category);
-  const dispatch = useDispatch();
-
-  useEffect(() => {}, []);
-
   const renderCategories = (categories) => {
     let myCategories = [];
     for (let category of categories) {
-      myCategories.push(
-        {
-          label: category.name,
-          value: category._id,
-          children: category.children.length > 0 && renderCategories(category.children),
-        }
-        // <li key={category.name}>
-        //   {category.name}{" "}
-        //   {category.children.length > 0 ? (
-        //     <ul>{renderCategories(category.children)}</ul>
-        //   ) : null}
-        // </li>
-      );
+      myCategories.push({
+        label: category.name,
+        value: category._id,
+        children: category.children.length > 0 && renderCategories(category.children),
+      });
     }
     return myCategories;
   };
@@ -87,7 +78,11 @@ const Category = () => {
   };
 
   const updateCategory = () => {
+    updateCheckedAndExpandedCategories();
     setUpdateCategoryModal(true);
+  };
+
+  const updateCheckedAndExpandedCategories = () => {
     const categories = createCategoryList(category.categories);
     const checkedArray = [];
     const expandedArray = [];
@@ -110,7 +105,6 @@ const Category = () => {
   const handleCategoryInPut = (key, value, index, type) => {
     if (type == "checked") {
       const updatedCheckedArray = checkedArray.map((item, _index) => {
-        console.log({ item });
         return index == _index ? { ...item, [key]: value } : item;
       });
       setCheckedArray(updatedCheckedArray);
@@ -143,9 +137,10 @@ const Category = () => {
     });
     setUpdateCategoryModal(false);
   };
+
   const renderUpdateCategoriesModal = () => {
     {
-      /* Edit categories modal */
+      /* Update categories modal */
     }
     return (
       <NewModal
@@ -244,12 +239,54 @@ const Category = () => {
               </Row>
             );
           })}
+      </NewModal>
+    );
+  };
 
-        {/* <input
-          type="file"
-          name="categoryImage"
-          onChange={handleCategoryImage}
-        /> */}
+  const deleteCategory = () => {
+    updateCheckedAndExpandedCategories();
+    setDeleteCategoryModal(true);
+  };
+
+  const deleteCategories = () => {
+    const checkedIdArray = checkedArray.map((item, index) => {
+      return { _id: item.value };
+    });
+
+    const expandedIdArray = expandedArray.map((item, index) => {
+      return { _id: item.value };
+    });
+  };
+
+  const renderDeleteCategoryModal = () => {
+    return (
+      <NewModal
+        modalTitle="Confirm"
+        show={deleteCategoryModal}
+        handleClose={() => setDeleteCategoryModal(false)}
+        buttons={[
+          {
+            label: "No",
+            color: "primary",
+            onClick: () => {
+              alert("no");
+            },
+          },
+          {
+            label: "yes",
+            color: "danger",
+            onClick: () => deleteCategories,
+          },
+        ]}
+      >
+        <h5>Expanded</h5>
+        {expandedArray.map((item, index) => {
+          return <span key={index}>{item.name}</span>;
+        })}
+        <h5>Checked</h5>
+        {checkedArray.map((item, index) => {
+          return <span key={index}>{item.name}</span>;
+        })}
       </NewModal>
     );
   };
@@ -311,13 +348,14 @@ const Category = () => {
         </Row>
         <Row>
           <Col>
-            <button>Delete</button>
+            <button onClick={deleteCategory}>Delete</button>
             <button onClick={updateCategory}>Edit</button>
           </Col>
         </Row>
       </Container>
       {renderAddCategoryModal()}
       {renderUpdateCategoriesModal()}
+      {renderDeleteCategoryModal()}
     </Layout>
   );
 };

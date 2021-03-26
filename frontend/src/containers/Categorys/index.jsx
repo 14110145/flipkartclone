@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { addCategory, updateCategories, getAllCategory } from "../../actions";
+import {
+  addCategory,
+  updateCategories,
+  getAllCategory,
+  deleteCategories as deleteCategoriesAction,
+} from "../../actions";
 import Layout from "../../components/Layout";
 import Input from "../../components/UI/Input";
 import NewModal from "../../components/UI/Modal";
@@ -252,9 +257,15 @@ const Category = () => {
     const checkedIdArray = checkedArray.map((item, index) => {
       return { _id: item.value };
     });
-
     const expandedIdArray = expandedArray.map((item, index) => {
       return { _id: item.value };
+    });
+    const idArray = expandedIdArray.concat(checkedIdArray);
+    dispatch(deleteCategoriesAction(idArray)).then((result) => {
+      if (result) {
+        dispatch(getAllCategory());
+        setDeleteCategoryModal(false);
+      }
     });
   };
 
@@ -275,7 +286,7 @@ const Category = () => {
           {
             label: "yes",
             color: "danger",
-            onClick: () => deleteCategories,
+            onClick: () => deleteCategories(),
           },
         ]}
       >

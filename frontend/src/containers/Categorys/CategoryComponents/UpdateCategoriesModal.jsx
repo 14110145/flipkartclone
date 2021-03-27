@@ -4,15 +4,23 @@ import Input from "../../../components/UI/Input";
 import NewModal from "../../../components/UI/Modal";
 
 const UpdateCategoriesModal = (props) => {
-  {
-    /* Update categories modal */
-  }
-  const { handleClose, modalTitle, size, expandedArray, checkedArray, handleCategoryInPut, categoryList } = props;
+  const {
+    show,
+    handleClose,
+    modalTitle,
+    size,
+    expandedArray,
+    checkedArray,
+    handleCategoryInPut,
+    categoryList,
+    handleSaveBtn,
+  } = props;
+  
   return (
-    <NewModal show={show} handleClose={handleClose} modalTitle={modalTitle} size={size}>
+    <NewModal show={show} handleClose={handleClose} modalTitle={modalTitle} size={size} handleSaveBtn={handleSaveBtn}>
       <Row>
         <Col>
-          <h6>Expanded Categories</h6>
+          <h5>Expanded Categories</h5>
         </Col>
       </Row>
 
@@ -34,7 +42,7 @@ const UpdateCategoriesModal = (props) => {
                   onChange={(e) => handleCategoryInPut("parentId", e.target.value, index, "expanded")}
                 >
                   <option>Select category</option>
-                  {createCategoryList(category.categories).map((option) => {
+                  {categoryList.map((option) => {
                     return (
                       <option key={option.value} value={option.value}>
                         {option.name}
@@ -57,7 +65,7 @@ const UpdateCategoriesModal = (props) => {
 
       <Row>
         <Col>
-          <h6>Checked Categories</h6>
+          <h5>Checked Categories</h5>
         </Col>
       </Row>
 
@@ -80,7 +88,7 @@ const UpdateCategoriesModal = (props) => {
                   onChange={(e) => handleCategoryInPut("parentId", e.target.value, index, "checked")}
                 >
                   <option>Select category</option>
-                  {createCategoryList(category.categories).map((option) => {
+                  {categoryList.map((option) => {
                     return (
                       <option key={option.value} value={option.value}>
                         {option.name}

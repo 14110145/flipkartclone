@@ -1,15 +1,15 @@
-import "./App.css";
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
-import Home from "./containers/Home";
-import Signin from "./containers/Signin";
-import Signup from "./containers/Signup";
-import PrivateRoute from "./components/HOC/PrivateRoute";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCategory, isUserLoggedIn, getInitialData } from "./actions";
-import Products from "./containers/Products";
-import Orders from "./containers/Orders";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { getInitialData, isUserLoggedIn } from "./actions";
+import "./App.css";
+import PrivateRoute from "./components/HOC/PrivateRoute";
 import Category from "./containers/Categorys";
+import Home from "./containers/Home";
+import Orders from "./containers/Orders";
+import Products from "./containers/Products";
+import Signin from "./containers/Signin";
+import Signup from "./containers/Signup";
 
 function App() {
   const dispatch = useDispatch();
@@ -18,7 +18,6 @@ function App() {
     if (!auth.authenticate) {
       dispatch(isUserLoggedIn());
     }
-    // dispatch(getAllCategory());
     dispatch(getInitialData());
   }, []);
 

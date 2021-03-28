@@ -15,7 +15,7 @@ const UpdateCategoriesModal = (props) => {
     categoryList,
     handleSaveBtn,
   } = props;
-  
+
   return (
     <NewModal show={show} handleClose={handleClose} modalTitle={modalTitle} size={size} handleSaveBtn={handleSaveBtn}>
       <Row>
@@ -52,7 +52,11 @@ const UpdateCategoriesModal = (props) => {
                 </select>
               </Col>
               <Col>
-                <select className="form-control">
+                <select
+                  className="form-control"
+                  value={item.type}
+                  onChange={(e) => handleCategoryInPut("type", e.target.value, index, "expanded")}
+                >
                   <option value="">Select type</option>
                   <option value="store">Store</option>
                   <option value="product">Product</option>
@@ -98,7 +102,11 @@ const UpdateCategoriesModal = (props) => {
                 </select>
               </Col>
               <Col>
-                <select className="form-control">
+                <select
+                  className="form-control"
+                  value={item.type}
+                  onChange={(e) => handleCategoryInPut("type", e.target.value, index, "checked")}
+                >
                   <option value="">Select type</option>
                   <option value="store">Store</option>
                   <option value="product">Product</option>

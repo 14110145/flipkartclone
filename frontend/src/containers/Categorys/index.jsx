@@ -15,12 +15,7 @@ import {
   IoMdBuild,
 } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addCategory,
-  deleteCategories as deleteCategoriesAction,
-  getAllCategory,
-  updateCategories,
-} from "../../actions";
+import { addCategory, deleteCategories as deleteCategoriesAction, updateCategories } from "../../actions";
 import Layout from "../../components/Layout";
 import AddCategoryModal from "./CategoryComponents/AddCategoryModal";
 import DeleteCategoryModal from "./CategoryComponents/DeleteCategoriesModal";
@@ -70,6 +65,7 @@ const Category = () => {
       options.push({
         value: category._id,
         name: category.name,
+        type: category.type,
         parentId: category.parentId,
       });
       if (category.children.length > 0) {
@@ -136,11 +132,7 @@ const Category = () => {
       form.append("parentId", item.parentId ? item.parentId : "");
       form.append("type", item.type);
     });
-    dispatch(updateCategories(form)).then((result) => {
-      if (result) {
-        dispatch(getAllCategory());
-      }
-    });
+    dispatch(updateCategories(form));
     setUpdateCategoryModal(false);
   };
 
@@ -159,12 +151,8 @@ const Category = () => {
     // const idArray = expandedIdArray.concat(checkedIdArray);
 
     if (checkedIdArray.length > 0) {
-      dispatch(deleteCategoriesAction(checkedIdArray)).then((result) => {
-        if (result) {
-          dispatch(getAllCategory());
-          setDeleteCategoryModal(false);
-        }
-      });
+      dispatch(deleteCategoriesAction(checkedIdArray));
+      setDeleteCategoryModal(false);
     }
   };
 

@@ -1,7 +1,7 @@
 import axiosIntance from "../helpers/axios";
 import { categoryContants } from "./constants";
 
-export const getAllCategory = () => {
+const getAllCategory = () => {
   return async (dispatch) => {
     dispatch({
       type: categoryContants.GET_ALL_CATEGORIES_REQUEST,
@@ -42,26 +42,32 @@ export const addCategory = (form) => {
 
 export const updateCategories = (form) => {
   return async (dispatch) => {
+    dispatch({ type: categoryContants.UPDATE_CATEGORIES_REQUEST });
     const res = await axiosIntance.post(`/category/update`, form);
     if (res.status === 201) {
-      return true;
+      dispatch({ type: categoryContants.UPDATE_CATEGORIES_SUCCESS });
+      dispatch(getAllCategory());
     } else {
-      return false;
+      dispatch({ type: categoryContants.UPDATE_CATEGORIES_FAILURE, payload: { error: "Cant update categories" } });
     }
   };
 };
 
 export const deleteCategories = (id) => {
   return async (dispatch) => {
+    dispatch({ type: categoryContants.DELETE_CATEGORIES_REQUEST });
     const res = await axiosIntance.post(`/category/delete`, {
       payload: {
         id,
       },
     });
     if (res.status === 201) {
-      return true;
+      dispatch({ type: categoryContants.DELETE_CATEGORIES_SUCCESS });
+      dispatch(getAllCategory());
     } else {
-      return false;
+      dispatch({ type: categoryContants.DELETE_CATEGORIES_FAILURE, payload: { error: "Cant delete categories" } });
     }
   };
 };
+
+export { getAllCategory };

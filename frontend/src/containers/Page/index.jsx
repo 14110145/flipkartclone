@@ -9,6 +9,7 @@ import { createPage } from "../../actions";
 
 const Page = (props) => {
   const category = useSelector((state) => state.category);
+  const page = useSelector((state) => state.page);
   const [createModal, setCreateModal] = useState(false);
   const [title, setTitle] = useState("");
   const [categories, setCategories] = useState([]);
@@ -22,6 +23,17 @@ const Page = (props) => {
   useEffect(() => {
     setCategories(linearCategories(category.categories));
   }, [category]);
+
+  useEffect(() => {
+    if (!page.loading) {
+      setCreateModal(false);
+      setDesc("");
+      setType("");
+      setTitle("");
+      setBanners([]);
+      setProducts([]);
+    }
+  }, [page]);
 
   const handleBannerImages = (e) => {
     setBanners([...banners, e.target.files[0]]);
@@ -55,7 +67,6 @@ const Page = (props) => {
       form.append("products", product);
     });
     dispatch(createPage(form));
-    setCreateModal(false);
   };
 
   const renderCreatePageModal = () => {
@@ -134,8 +145,14 @@ const Page = (props) => {
   };
   return (
     <Layout sidebar>
-      {renderCreatePageModal()}
-      <button onClick={() => setCreateModal(true)}>Create Page</button>
+      {page.loading ? (
+        <p>Creating page...please wait!!!</p>
+      ) : (
+        <>
+          {renderCreatePageModal()}
+          <button onClick={() => setCreateModal(true)}>Create Page</button>
+        </>
+      )}
     </Layout>
   );
 };

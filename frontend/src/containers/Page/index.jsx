@@ -79,7 +79,7 @@ const Page = (props) => {
       >
         <Row>
           <Col>
-            <select className="form-control form-control-sm" value={categoryId} onChange={onCategoryChange}>
+            {/* <select className="form-control form-control-sm" value={categoryId} onChange={onCategoryChange}>
               <option value="">Select category</option>
               {categories.map((cat) => {
                 return (
@@ -88,7 +88,14 @@ const Page = (props) => {
                   </option>
                 );
               })}
-            </select>
+            </select> */}
+            <Input
+              type="select"
+              value={categoryId}
+              onChange={onCategoryChange}
+              options={categories}
+              placeholder="Select category"
+            />
           </Col>
           <Col>
             <Input

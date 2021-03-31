@@ -14,7 +14,6 @@ export const createPage = (form) => {
       // }
     } catch (error) {
       dispatch({ type: pageContants.CREATE_PAGE_FAILURE, payload: { error } });
-      console.log(error);
     }
   };
 };

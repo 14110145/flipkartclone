@@ -101,7 +101,6 @@ const Category = () => {
       });
     setCheckedArray(checkedArray);
     setExpandedArray(expandedArray);
-    console.log({ checked, expanded, categories, checkedArray, expandedArray });
   };
 
   const handleCategoryInPut = (key, value, index, type) => {

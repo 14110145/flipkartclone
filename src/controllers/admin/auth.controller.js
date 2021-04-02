@@ -41,8 +41,8 @@ exports.signin = (req, res) => {
         error,
       });
     if (user) {
-      let findResult = await user.authenticate(req.body.password);
-      if (findResult && user.role === "admin") {
+      let authPassWordAdmin = await user.authenticate(req.body.password);
+      if (authPassWordAdmin && user.role === "admin") {
         const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET, {
           expiresIn: "1h",
         });

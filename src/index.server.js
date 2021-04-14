@@ -18,6 +18,7 @@ const cartRoutes = require("./routes/cart.route");
 const initialDataRoutes = require("./routes/admin/initialData");
 const pageRoutes = require("./routes/admin/page.route");
 const addressRoutes = require("./routes/address.route");
+const orderRoutes = require("./routes/order.route");
 
 mongoose
   .connect(
@@ -47,6 +48,7 @@ app.use("/api", cartRoutes);
 app.use("/api", initialDataRoutes);
 app.use("/api", pageRoutes);
 app.use("/api", addressRoutes);
+app.use("/api", orderRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

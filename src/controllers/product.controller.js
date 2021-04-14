@@ -36,22 +36,28 @@ exports.createProduct = (req, res) => {
 exports.getProductsBySlug = (req, res) => {
   const { slug } = req.params;
   Category.findOne({ slug: slug })
-    .select("_id")
+    .select("_id type")
     .exec((error, category) => {
       if (error) {
         return res.status(400).json({ error });
       }
       if (category) {
         Product.find({ category: category._id }).exec((error, products) => {
-          if (products.length > 0) {
-            return res.status(200).json({
-              products,
-              productsByPrice: {
-                under500: products.filter((product) => product.price <= 500),
-                under1k: products.filter((product) => product.price > 500 && product.price <= 1000),
-                under2k: products.filter((product) => product.price > 1000 && product.price <= 2000),
-              },
-            });
+          if (category.type) {
+            if (products.length > 0) {
+              return res.status(200).json({
+                products,
+                productsByPrice: {
+                  under500: products.filter((product) => product.price <= 500),
+                  under1k: products.filter((product) => product.price > 500 && product.price <= 1000),
+                  under2k: products.filter((product) => product.price > 1000 && product.price <= 2000),
+                },
+              });
+            }
+          } else if (error) {
+            return res.status(400).json({ error });
+          } else {
+            return res.status(200).json({ products });
           }
         });
       }

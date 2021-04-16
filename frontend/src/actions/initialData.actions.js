@@ -11,7 +11,7 @@ export const getInitialData = () => {
         payload: { categories },
       });
       dispatch({
-        type: productContants.GET_ALL_PRODUCTS_SUCCESS,
+        type: productContants.GET_ALL_PRODUCT_SUCCESS,
         payload: { products },
       });
       dispatch({

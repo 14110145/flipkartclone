@@ -15,3 +15,8 @@ exports.updateOrder = (req, res) => {
     }
   });
 };
+
+exports.getCustomerOrder = async (req, res) => {
+  const orders = await Order.find({}).populate("items.productId", " name").exec();
+  return res.status(200).json({ orders });
+};

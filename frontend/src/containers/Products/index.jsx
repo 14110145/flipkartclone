@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Col, Container, Row, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { addProduct } from "../../actions/product.actions";
+import { addProduct, deleteProductById } from "../../actions/product.actions";
 import Layout from "../../components/Layout";
 import Input from "../../components/UI/Input";
 import NewModal from "../../components/UI/Modal";
@@ -71,15 +71,23 @@ const Products = () => {
           {product.products.length > 0
             ? product.products.map((product, index) => {
                 return (
-                  <tr
-                    onClick={() => showProductDetailsModal(product)}
-                    key={product._id}
-                  >
+                  <tr key={product._id}>
                     <td>{index}</td>
                     <td>{product.name}</td>
                     <td>{product.price}</td>
                     <td>{product.quantity}</td>
                     <td>{product.category.name}</td>
+                    <td>
+                      <button onClick={() => showProductDetailsModal(product)}>Info</button>
+                      <button
+                        onClick={() => {
+                          const payload = { productId: product._id };
+                          dispatch(deleteProductById(payload));
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 );
               })
@@ -91,40 +99,22 @@ const Products = () => {
 
   const renderAddProductModal = () => {
     return (
-      <NewModal
-        handleClose={handleClose}
-        modalTitle={"Add new Products"}
-        show={show}
-      >
-        <Input
-          label="Name"
-          value={name}
-          placeholder={"Product Name"}
-          onChange={(e) => setName(e.target.value)}
-        />
+      <NewModal handleClose={handleClose} modalTitle={"Add new Products"} show={show}>
+        <Input label="Name" value={name} placeholder={"Product Name"} onChange={(e) => setName(e.target.value)} />
         <Input
           label="Quantity"
           value={quantity}
           placeholder={"Quantity"}
           onChange={(e) => setQuantity(e.target.value)}
         />
-        <Input
-          label="Price"
-          value={price}
-          placeholder={"Price"}
-          onChange={(e) => setPrice(e.target.value)}
-        />
+        <Input label="Price" value={price} placeholder={"Price"} onChange={(e) => setPrice(e.target.value)} />
         <Input
           label="Description"
           value={description}
           placeholder={"Description"}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <select
-          className="form-control"
-          value={categoryId}
-          onChange={(e) => setCategoryId(e.target.value)}
-        >
+        <select className="form-control" value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
           <option>Select category</option>
           {createCategoryList(category.categories).map((option) => {
             return (
@@ -134,16 +124,8 @@ const Products = () => {
             );
           })}
         </select>
-        {productPictures.length > 0
-          ? productPictures.map((pic, index) => (
-              <div key={index}>{pic.name}</div>
-            ))
-          : null}
-        <input
-          type="file"
-          name="productPicture"
-          onChange={handleProductPicture}
-        />
+        {productPictures.length > 0 ? productPictures.map((pic, index) => <div key={index}>{pic.name}</div>) : null}
+        <input type="file" name="productPicture" onChange={handleProductPicture} />
       </NewModal>
     );
   };

@@ -17,6 +17,15 @@ const Signup = () => {
   const auth = useSelector((state) => state.auth);
   const user = useSelector((state) => state.user);
 
+  useEffect(() => {
+    if (!user.loading) {
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
+    }
+  }, [user.loading]);
+
   if (auth.authenticate) {
     return <Redirect to={`/`} />;
   }

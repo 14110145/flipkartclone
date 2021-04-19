@@ -47,6 +47,16 @@ exports.addItemToCart = (req, res) => {
   });
 };
 
+exports.removeCartItems = (req, res) => {
+  const { productId } = req.body.payload;
+  if (productId) {
+    Cart.update({ user: req.user._id }, { $pull: { cartItems: { product: productId } } }).exec((error, result) => {
+      if (error) return res.status(400).json({ error });
+      if (result) return res.status(202).json({ result });
+    });
+  }
+};
+
 exports.getCartItems = (req, res) => {
   Cart.findOne({ user: req.user._id })
     .populate("cartItems.product", "_id name price productPictures")

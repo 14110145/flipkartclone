@@ -33,6 +33,18 @@ exports.createProduct = (req, res) => {
   });
 };
 
+exports.deleteProductById = (req, res) => {
+  const { productId } = req.body.payload;
+  if (productId) {
+    Product.deleteOne({ _id: productId }).exec((error, result) => {
+      if (error) return res.status(400).json({ error });
+      if (result) return res.status(202).json({ result });
+    });
+  } else {
+    return res.status(400).json({ message: "Param is required" });
+  }
+};
+
 exports.getProductsBySlug = (req, res) => {
   const { slug } = req.params;
   Category.findOne({ slug: slug })
@@ -47,17 +59,20 @@ exports.getProductsBySlug = (req, res) => {
             if (products.length > 0) {
               return res.status(200).json({
                 products,
+                priceRange: {
+                  under500: 500,
+                  under1k: 1000,
+                  under2k: 2000,
+                  under3k: 3000,
+                },
                 productsByPrice: {
                   under500: products.filter((product) => product.price <= 500),
                   under1k: products.filter((product) => product.price > 500 && product.price <= 1000),
                   under2k: products.filter((product) => product.price > 1000 && product.price <= 2000),
+                  under3k: products.filter((product) => product.price > 2000 && product.price <= 3000),
                 },
               });
             }
-          } else if (error) {
-            return res.status(400).json({ error });
-          } else {
-            return res.status(200).json({ products });
           }
         });
       }
@@ -74,4 +89,13 @@ exports.getProductDetailsById = (req, res) => {
   } else {
     return res.status(400).json({ error: "Params is required" });
   }
+};
+
+exports.getProducts = async (req, res) => {
+  const products = await Product.find({ createdBy: req.user._id })
+    .select("_id name price quantity slug description productPictures category")
+    .populate({ path: "category", select: "_id name" })
+    .exec();
+
+  res.status(200).json({ products });
 };
